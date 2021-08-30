@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<button id="btn">Click Me!</button>
+
+<p id="demo"></p>
+
+<script>
+
+var add1 = function(x, y) {
+	console.log(this);
+    return x+y;
+}
+
+const add2 = (x, y) =>{
+	console.log(this);
+    return x+y;
+}
+
+
+document.addEventListener("DOMContentLoaded", add1);
+
+document.getElementById("btn").addEventListener("click", add1);
+
+// document.addEventListener("DOMContentLoaded", add2);
+
+// document.getElementById("btn").addEventListener("click", add2);
+</script>
+
+</body>
+</html>
