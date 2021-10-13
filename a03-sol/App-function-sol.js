@@ -62,7 +62,7 @@ function App(){
   },[])
 
   const getWeather = async(cityname)=>{
-    const response = await fetch("https://api.weatherbit.io/v2.0/current?city=" + cityname + "&key=fc85ea535c564d13a66b00635a189228&units=i");
+    const response = await fetch("https://api.weatherbit.io/v2.0/current?city=" + cityname + "&key=<apikey>&units=i");
     const result = await response.json();
 
     // this.setState({weatherObject:result})
