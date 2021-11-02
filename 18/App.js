@@ -7,23 +7,54 @@ import * as SecureStore from 'expo-secure-store';
 
 export default function App() {
 
+  const [name, setName] = useState({firstName:null, lastName:null})
+
+  const saveData = async()=>{
+
+    // await AsyncStorage.setItem("name",name)
+    const jsonValue = JSON.stringify(name)
+    await SecureStore.setItemAsync("name",jsonValue)
+  }
+
+  useEffect(async()=>{
+    const result = await SecureStore.getItemAsync("name")
+
+    if(result){
+      const jsonValue = JSON.parse(result)
+      setName(jsonValue)
+    }
+    // setName(result)
+  },[])
+
+  const clearData = async()=>{
+    await SecureStore.deleteItemAsync("name")
+    setName(null)
+  }
+
+
   return(
     <View style={styles.container}>
       <TextInput
         style = {{borderColor:"black", borderBottomWidth:1}}
-        placeholder="Name"
-        // defaultValue={}
-        // onChangeText={}
+        placeholder="First Name"
+        defaultValue={name?name.firstName:null}
+        onChangeText={text=>setName({...name, firstName:text})}
+      />
+      <TextInput
+        style = {{borderColor:"black", borderBottomWidth:1}}
+        placeholder="Last Name"
+        defaultValue={name?name.lastName:null}
+        onChangeText={text=>setName({...name, lastName:text})}
       />
       <Button
         color = "#2A3132"
         title = "save"
-        // onPress = {}
+        onPress = {saveData}
       />
       <Button
         color = "#2A3132"
         title = "clear"
-        // onPress = {}  
+        onPress = {clearData}
       />
     </View>
     )
