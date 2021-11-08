@@ -6,7 +6,12 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, si
 
 
 const firebaseConfig = {
-
+  apiKey: "AIzaSyALPKf5zJUKxMsJxXKPGFysgR4eUuzIz_0",
+  authDomain: "demo19-61d58.firebaseapp.com",
+  projectId: "demo19-61d58",
+  storageBucket: "demo19-61d58.appspot.com",
+  messagingSenderId: "493958980793",
+  appId: "1:493958980793:web:aa601385cfb8d359112768"
 };
 
 initializeApp(firebaseConfig);
@@ -21,20 +26,68 @@ export default function App() {
   const [user, setUser] = useState(null)
 
   const signUp = ()=>{
+    createUserWithEmailAndPassword(auth,email, password)
+    .then(result=>{
+      const user = result.user
+      setUser(user)
+    })
+    .catch(error=>{
+      console.log(error.code + " : " + error.message)
+    })
 
   }
 
   const logIn = ()=>{
 
+    signInWithEmailAndPassword(auth,email, password)
+    .then(result=>{
+      const user = result.user
+      setUser(user)
+    })
+    .catch(error=>{
+      console.log(error.code + " : " + error.message)
+    })
+
+
   }
 
   const logOut = ()=>{
+    signOut(auth)
+    .then(()=>{
+      setUser(null)
+    })
+    .catch(error=>{
+      console.log(error.code + " : " + error.message)
+    })
 
   }
 
   const signInGoogle = ()=>{
 
+    const provider = new GoogleAuthProvider();
+    signInWithRedirect(auth, provider)
+    .then(()=>{
+    })
+    .catch(error=>{
+      console.log(error.code + " : " + error.message)
+    })
+
   }
+
+  useEffect(()=>{
+    getRedirectResult(auth)
+    .then(result=>{
+      console.log(result)
+      const user = result.user
+      const token = result.accessToken
+      setUser(user)
+    })
+    .catch(error=>{
+      // console.log(error.code + " : " + error.message)
+      alert(error.code + " : " + error.message)
+    })
+
+  })
 
   return (
     <View style={styles.container}>

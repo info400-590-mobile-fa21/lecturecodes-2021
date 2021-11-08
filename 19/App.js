@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React, {useState,useEffect} from 'react'; //import the default export in the module
 import { StyleSheet, Text, View, Image, Button, TextInput} from 'react-native';
 import { initializeApp } from 'firebase/app';
-import { getFirestore, setDoc, getDoc, doc } from 'firebase/firestore';
+import { getFirestore, setDoc, getDoc, getDocs, doc, collection, where, query, orderBy, limit } from 'firebase/firestore';
 
 
 // Your web app's Firebase configuration
@@ -40,26 +40,79 @@ export default function App (){
 
   const getData = async() =>{
 
-    // const colRef = collection(db, "users");
+    //Get single document
 
-    const docRef = doc(firestore, "users", "0ZABmxTUga8l45tb0Y9O");
-    const docSnap = await getDoc(docRef);
+    // const docRef = doc(firestore, "users", "1");
+    // const docSnap = await getDoc(docRef);
 
-    if (docSnap.exists()) {
+    // if (docSnap.exists()) {
 
+    //   let newUser = {
+    //     firstname: docSnap.data().firstname,
+    //     lastname: docSnap.data().lastname,
+    //     email: docSnap.data().email
+    //   }
+
+    //   setUserInfo([...userInfo, newUser])      
+
+    //   console.log("Document data:", docSnap.data());
+    // } else {
+    //   // doc.data() will be undefined in this case
+    //   console.log("No such document!");
+    // }
+
+    // const colRef = collection(firestore, "users")
+    // const docs = await getDocs(colRef)
+
+    // let newUserInfos = []
+
+    // docs.forEach((doc)=>{
+    //   let newUser = {
+    //     firstname: doc.data().firstname,
+    //     lastname: doc.data().lastname,
+    //     email: doc.data().email
+    //   }
+
+    //   newUserInfos = [...newUserInfos, newUser]
+    // })
+
+    // setUserInfo(newUserInfos)
+
+    // const colRef = collection(firestore, "users")
+    // const q = query(colRef, where("lastname", "==", "Chung"), where("firstname", "==", "Christina"))
+    // const docs = await getDocs(q)
+
+    // let newUserInfos = []
+
+    // docs.forEach((doc)=>{
+    //   let newUser = {
+    //     firstname: doc.data().firstname,
+    //     lastname: doc.data().lastname,
+    //     email: doc.data().email
+    //   }
+
+    //   newUserInfos = [...newUserInfos, newUser]
+    // })
+
+    // setUserInfo(newUserInfos)
+
+    const colRef = collection(firestore, "users")
+    const q = query(colRef, orderBy("firstname", "desc"), limit(2))
+    const docs = await getDocs(q)
+
+    let newUserInfos = []
+
+    docs.forEach((doc)=>{
       let newUser = {
-        firstname: docSnap.data().firstname,
-        lastname: docSnap.data().lastname,
-        email: docSnap.data().email
+        firstname: doc.data().firstname,
+        lastname: doc.data().lastname,
+        email: doc.data().email
       }
 
-      setUserInfo([...userInfo, newUser])      
+      newUserInfos = [...newUserInfos, newUser]
+    })
 
-      console.log("Document data:", docSnap.data());
-    } else {
-      // doc.data() will be undefined in this case
-      console.log("No such document!");
-    }
+    setUserInfo(newUserInfos)
 
 
   }
